@@ -3,7 +3,7 @@ class Transmute < Thor
     
     desc "convert_folder", "checks all contents of folder and reformats to specified file format"
     method_option :recursive, :aliases => '-R', :desc => 'change files in folder subfolders'
-    # method_option :file_type, :aliases => '-ft', :desc => "pass file type, options = '.mp4', '.avi', '.mp3', '.mov', '.mpeg'"
+    method_option :file_type, :aliases => '-ft', :desc => "pass file type, options = '.mp4', '.avi', '.mp3', '.mov', '.mpeg'"
     def convert_folder(path)
       return puts 'Invalid path' if !Dir.exist?(path)
       
@@ -23,10 +23,7 @@ class Transmute < Thor
 
           extension = File.extname(path)
           if extension == '.avi'
-            escape_path = unix_escape(path)
-            new_path = escape_path.gsub(extension, '.mp4')
-            puts 'Converting '+path
-            system "ffmpeg -i #{escape_path} -vcodec copy -acodec copy #{new_path}"
+            run_ffmpeg(path)
             puts 'Done'
           else
             puts 'Not converting '+path
@@ -35,6 +32,13 @@ class Transmute < Thor
           puts 'Not a valid file'
         end
         
+    end
+
+    def run_ffmpeg(path)
+      escape_path = unix_escape(path)
+      new_path = escape_path.gsub(extension, '.mp4')
+      puts 'Converting '+path
+      system "ffmpeg -i #{escape_path} -vcodec copy -acodec copy #{new_path}"
     end
 
     def sanitize_path(path)

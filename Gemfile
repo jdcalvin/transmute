@@ -1,8 +1,14 @@
 source 'https://rubygems.org'
 
-ruby '2.1.1'
+ruby '2.1.5'
 
-gem 'rspec-rails'
+gem 'rspec'
 
 gem 'thor'
+
+gem 'pry'
+
+gem 'guard'
+
+gem 'fuubar'
 
